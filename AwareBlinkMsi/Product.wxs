@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix
+	xmlns="http://schemas.microsoft.com/wix/2006/wi"
+	xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="*" Name="AwareBlink" Language="1033" Version="1.0.0.0" Manufacturer="Buckling Springs LLC" UpgradeCode="354DBC22-5F1C-438E-A0B0-5B355D63119F">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="Aware Blink" Level="1">
+			<ComponentGroupRef Id="AwareBlinkFiles" />
+			<ComponentGroupRef Id="AwareBlinkAddOnConfig" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="LocalAppDataFolder">
+				<Directory Id="INSTALLFOLDER" Name="AwareBlink" />
+				<Directory Id="ADDONFOLDER" Name="AwareAddOns" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="AwareBlinkFiles" Directory="INSTALLFOLDER">
+
+			<Component Id="AwareBlinkExecutable" Guid="*">
+				<File Name="$(var.Blink.TargetFileName)" Source="$(var.Blink.TargetPath)"  KeyPath="yes"/>
+			</Component>
+
+
+			<Component Id="AwareBlinkExeConfig" Guid="*">
+				<File Name="AwareBlink.exe.config" Source="$(var.Blink.TargetDir)AwareBlink.exe.config"  KeyPath="yes"/>
+			</Component>
+
+			<!-- Dependencies -->
+
+			<Component Id="FSharpCoreAssembly" Guid="*">
+				<File Name="FSharp.Core.dll" Source="$(var.Blink.TargetDir)FSharp.Core.dll"  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="ArguAssembly" Guid="*">
+				<File Name="Argu.dll" Source="$(var.Blink.TargetDir)Argu.dll"  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="BlinkStickDotNetAssembly" Guid="*">
+				<File Name="BlinkStickDotNet.dll" Source="$(var.Blink.TargetDir)BlinkStickDotNet.dll"  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="HidSharpAssembly" Guid="*">
+				<File Name="HidSharp.dll" Source="$(var.Blink.TargetDir)HidSharp.dll"  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="LibUsbDotNetAssembly" Guid="*">
+				<File Name="LibUsbDotNet.dll" Source="$(var.Blink.TargetDir)LibUsbDotNet.dll"  KeyPath="yes"/>
+			</Component>
+
+
+		</ComponentGroup>
+
+		<ComponentGroup Id="AwareBlinkAddOnConfig" Directory="ADDONFOLDER">
+			<Component Id="AwareBlinkConfig" Guid="*">
+				<File Id="AwareBlinkConfigFile" Name="AwareBlink.mbroadcast.xml" Source="$(var.Blink.TargetDir)AwareBlink.mbroadcast.xml"  KeyPath="yes" />
+
+				<util:XmlFile Id="SetWorkingDirectory"
+						Action="setValue"
+						ElementPath="/AwareAddOn/WorkingDirectory"
+						Value="[INSTALLFOLDER]"
+						File="[ADDONFOLDER]AwareBlink.mbroadcast.xml"
+						SelectionLanguage="XPath"
+						Sequence="1"/>
+			</Component>
+		</ComponentGroup>
+
+
+	</Fragment>
+</Wix>

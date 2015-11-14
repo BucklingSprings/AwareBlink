@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AwareAddOn enabled="true">
+	<Program><![CDATA[ AwareBlink.exe ]]> </Program>
+	<WorkingDirectory></WorkingDirectory>
+	<Arguments> <![CDATA[ --goal-words {GOAL_WORDS} --goal-likely {GOAL_LIKELY} --goal-words-done {GOAL_WORDS_DONE} --goal-likely-percent {GOAL_LIKELY_PCT} ]]>  </Arguments>
+</AwareAddOn>
